@@ -8,11 +8,19 @@
 
 import UIKit
 import GoogleMaps
+import SnapKit
 
 class MapViewController: UIViewController {
     
+    let mapView = GMSMapView()
+    let locationManager = CLLocationManager()
+    
+    let saveButton = UIButton(type: .System)
+    
     init() {
         super.init(nibName: nil, bundle: nil)
+        
+        saveButton.setTitle("Save this place", forState: .Normal)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -20,31 +28,41 @@ class MapViewController: UIViewController {
     }
     
     override func loadView() {
-        let camera = GMSCameraPosition.cameraWithLatitude(1.285, longitude: 103.848, zoom: 12)
-        let mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
         self.view = mapView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        
+        self.view.addSubview(saveButton)
+        
+        saveButton.snp_makeConstraints { (make) in
+            make.bottom.equalTo(self.view.snp_bottom).offset(-20);
+            make.height.equalTo(40.0)
+            make.width.equalTo(self.view.snp_width)
+        }
     }
+}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+// MARK: - CLLocationManagerDelegate
+extension MapViewController: CLLocationManagerDelegate {
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse {
+            locationManager.startUpdatingLocation()
+            mapView.myLocationEnabled = true
+            mapView.settings.myLocationButton = true
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            locationManager.stopUpdatingLocation()
+        }
     }
-    */
-
 }
