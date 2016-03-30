@@ -17,7 +17,6 @@ class PlaceSelectorViewController: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        
         tableView.dataSource = self
     }
     
@@ -29,6 +28,7 @@ class PlaceSelectorViewController: UIViewController {
         self.view.backgroundColor = UIColor.whiteColor()
         
         tableView.frame = self.view.frame
+        tableView.contentInset = UIEdgeInsetsMake(UIApplication.sharedApplication().statusBarFrame.size.height, 0, 0, 0)
         self.view.addSubview(tableView)
 
         placesClient.currentPlaceWithCallback({ [weak self]
