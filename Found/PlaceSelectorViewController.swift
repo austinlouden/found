@@ -37,10 +37,6 @@ class PlaceSelectorViewController: UIViewController {
             if let placeLikelihoodList = placeLikelihoodList {
                 self?.places = NSArray.init(array: placeLikelihoodList.likelihoods)
                 self?.tableView.reloadData()
-                
-                for likelihood in placeLikelihoodList.likelihoods {
-                    print(likelihood.place.name)
-                }
             }
         })
     }

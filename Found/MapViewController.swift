@@ -14,7 +14,6 @@ class MapViewController: UIViewController {
     
     let mapView = GMSMapView()
     let locationManager = CLLocationManager()
-    
     let saveButton = UIButton(type: .System)
     
     init() {
@@ -42,7 +41,8 @@ class MapViewController: UIViewController {
         self.view.addSubview(saveButton)
         
         saveButton.snp_makeConstraints { (make) in
-            make.bottom.equalTo(self.view.snp_bottom).offset(-20);
+            guard let height = self.tabBarController?.tabBar.frame.size.height else { return }
+            make.bottom.equalTo(self.view.snp_bottom).offset(-height - 20)
             make.height.equalTo(40.0)
             make.width.equalTo(self.view.snp_width)
         }

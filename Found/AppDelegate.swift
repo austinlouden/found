@@ -20,7 +20,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         GMSServices.provideAPIKey(googleAPIKey)
         
-        let rootViewController = MapViewController()
+        // create the view controllers held in the tab bar
+        let mapViewController = MapViewController()
+        mapViewController.tabBarItem = UITabBarItem(title: "Map", image: nil, selectedImage: nil)
+        
+        let profileViewController = ProfileViewController()
+        profileViewController.tabBarItem = UITabBarItem(title: "My places", image: nil, selectedImage: nil)
+        
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [mapViewController, profileViewController]
+        
+        let rootViewController = tabBarController
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()

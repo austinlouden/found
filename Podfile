@@ -4,8 +4,9 @@
 use_frameworks!
 
 target 'Found' do
-pod 'GoogleMaps'
-pod 'SnapKit'
+  pod 'GoogleMaps'
+  pod 'SnapKit'
+  pod 'RealmSwift'
 end
 
 target 'FoundTests' do
