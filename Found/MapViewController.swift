@@ -21,6 +21,7 @@ class MapViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         saveButton.setTitle("Save this place", forState: .Normal)
+        saveButton.addTarget(self, action: #selector(savePressed), forControlEvents: .TouchUpInside)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -45,6 +46,10 @@ class MapViewController: UIViewController {
             make.height.equalTo(40.0)
             make.width.equalTo(self.view.snp_width)
         }
+    }
+    
+    func savePressed() {
+        self.presentViewController(PlaceSelectorViewController(), animated: true, completion: nil)
     }
 }
 
