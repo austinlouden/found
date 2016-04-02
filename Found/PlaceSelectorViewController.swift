@@ -71,6 +71,5 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
         try! realm.write {
             realm.add(place)
         }
-        
     }
 }
