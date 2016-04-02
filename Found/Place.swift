@@ -11,4 +11,9 @@ import RealmSwift
 
 class Place: Object {
     dynamic var name = ""
+    dynamic var placeID = ""
+    dynamic var longitude: Double = 0.0
+    dynamic var latitude: Double = 0.0
+    dynamic var formattedAddress: String? = nil
+    dynamic var website: String? = nil
 }

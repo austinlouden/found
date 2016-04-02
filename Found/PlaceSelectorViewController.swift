@@ -7,17 +7,18 @@
 //
 
 import GoogleMaps
+import RealmSwift
 
 class PlaceSelectorViewController: UIViewController {
     
     let placesClient = GMSPlacesClient()
+    var places = [GMSPlaceLikelihood]()
     let tableView = UITableView()
-    
-    var places = NSArray()
     
     init() {
         super.init(nibName: nil, bundle: nil)
         tableView.dataSource = self
+        tableView.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -35,7 +36,7 @@ class PlaceSelectorViewController: UIViewController {
             (placeLikelihoodList: GMSPlaceLikelihoodList?, error: NSError?) -> Void in
 
             if let placeLikelihoodList = placeLikelihoodList {
-                self?.places = NSArray.init(array: placeLikelihoodList.likelihoods)
+                self?.places = placeLikelihoodList.likelihoods
                 self?.tableView.reloadData()
             }
         })
@@ -43,7 +44,7 @@ class PlaceSelectorViewController: UIViewController {
 }
 
 // MARK: - UITableViewDatasource
-extension PlaceSelectorViewController: UITableViewDataSource {
+extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.places.count
@@ -51,7 +52,25 @@ extension PlaceSelectorViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = places.objectAtIndex(indexPath.row).place.name
+        cell.textLabel?.text = places[indexPath.row].place.name
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let gmsPlace : GMSPlace = places[indexPath.row].place
+        
+        let place = Place()
+        place.name = gmsPlace.name
+        place.placeID = gmsPlace.placeID
+        place.longitude = gmsPlace.coordinate.longitude
+        place.latitude = gmsPlace.coordinate.latitude
+        place.formattedAddress = gmsPlace.formattedAddress
+        place.website = gmsPlace.website?.absoluteString
+        
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(place)
+        }
+        
     }
 }
