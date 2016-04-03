@@ -17,6 +17,9 @@ class PlaceSelectorViewController: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
+        
+        self.title = "Save this place"
+        
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -28,8 +31,10 @@ class PlaceSelectorViewController: UIViewController {
     override func viewDidLoad() {
         self.view.backgroundColor = UIColor.whiteColor()
         
+        let closeButton = UIBarButtonItem(title: "Close", style: .Plain, target: self, action: #selector(closePressed))
+        self.navigationItem.leftBarButtonItem = closeButton
+        
         tableView.frame = self.view.frame
-        tableView.contentInset = UIEdgeInsetsMake(UIApplication.sharedApplication().statusBarFrame.size.height, 0, 0, 0)
         self.view.addSubview(tableView)
 
         placesClient.currentPlaceWithCallback({ [weak self]
@@ -40,6 +45,10 @@ class PlaceSelectorViewController: UIViewController {
                 self?.tableView.reloadData()
             }
         })
+    }
+    
+    func closePressed() {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
@@ -71,5 +80,7 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
         try! realm.write {
             realm.add(place)
         }
+        
+        self.closePressed()
     }
 }

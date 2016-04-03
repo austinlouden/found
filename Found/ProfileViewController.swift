@@ -13,6 +13,7 @@ class ProfileViewController: UIViewController {
     
     let tableView = UITableView()
     var places: Results<Place>!
+    let realm = try! Realm()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -32,10 +33,13 @@ class ProfileViewController: UIViewController {
         tableView.frame = self.view.frame
         tableView.contentInset = UIEdgeInsetsMake(UIApplication.sharedApplication().statusBarFrame.size.height, 0, 0, 0)
         self.view.addSubview(tableView)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
-        let realm = try! Realm()
         places = realm.objects(Place)
-        
+        tableView.reloadData()
     }
 }
 

@@ -49,7 +49,8 @@ class MapViewController: UIViewController {
     }
     
     func savePressed() {
-        self.presentViewController(PlaceSelectorViewController(), animated: true, completion: nil)
+        let navigationController = UINavigationController(rootViewController: PlaceSelectorViewController())
+        self.presentViewController(navigationController, animated: true, completion: nil)
     }
 }
 
