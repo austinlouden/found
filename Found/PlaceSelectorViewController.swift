@@ -22,9 +22,10 @@ class PlaceSelectorViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         self.title = "Save this place"
-        
+
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .None
         tableView.registerClass(PlaceSelectorTableViewCell.self, forCellReuseIdentifier: "placeCell")
     }
     
@@ -34,11 +35,14 @@ class PlaceSelectorViewController: UIViewController {
     
     override func viewDidLoad() {
         self.view.backgroundColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.translucent = false
         
         let closeButton = UIBarButtonItem(title: "Close", style: .Plain, target: self, action: #selector(closePressed))
+        closeButton.setTitleTextAttributes(NSAttributedString.navigationButtonAttributes(), forState: .Normal)
         self.navigationItem.leftBarButtonItem = closeButton
         
         tableView.frame = self.view.frame
+        tableView.contentInset = UIEdgeInsetsMake(16, 0, 0, 0)
         self.view.addSubview(tableView)
 
         placesClient.currentPlaceWithCallback({ [weak self]
@@ -65,7 +69,16 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = PlaceSelectorTableViewCell()
-        cell.nameLabel.attributedText = NSAttributedString.largeBoldAttributedString(places[indexPath.row].place.name, color: UIColor.foundDarkGrayColor())
+        let place = self.places[indexPath.row].place
+        
+        cell.nameLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.largeBoldFont(), string: place.name, color: UIColor.foundDarkGrayColor())
+        
+        if let address = place.formattedAddress {
+             cell.addressLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.smallRegularFont(), string: address, color: UIColor.foundLightGrayColor())
+        } else {
+            cell.addressLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.smallRegularFont(), string: "No address available", color: UIColor.foundLightGrayColor())
+        }
+        
         return cell
     }
     

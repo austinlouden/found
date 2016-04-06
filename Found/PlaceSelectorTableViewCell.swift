@@ -18,12 +18,20 @@ class PlaceSelectorTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.contentView.addSubview(nameLabel)
+        self.contentView.addSubview(addressLabel)
         
         nameLabel.snp_makeConstraints { (make) in
-            make.top.equalTo(self.contentView).inset(Insets.small)
-            make.width.equalTo(self.contentView).inset(Insets.large)
-            make.left.equalTo(self.contentView).inset(Insets.large)
+            make.top.equalTo(self.contentView).inset(Padding.small)
+            make.width.equalTo(self.contentView).inset(Padding.large)
+            make.left.equalTo(self.contentView).inset(Padding.large)
             make.height.equalTo(nameLabel)
+        }
+        
+        addressLabel.snp_makeConstraints { (make) in
+            make.top.equalTo(nameLabel.snp_bottom)
+            make.width.equalTo(self.contentView).inset(Padding.large)
+            make.left.equalTo(self.contentView).inset(Padding.large)
+            make.height.equalTo(addressLabel)
         }
     }
     

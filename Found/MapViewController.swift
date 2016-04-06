@@ -50,6 +50,7 @@ class MapViewController: UIViewController {
     
     func savePressed() {
         let navigationController = UINavigationController(rootViewController: PlaceSelectorViewController())
+        navigationController.navigationBar.titleTextAttributes = NSAttributedString.navigationTitleAttributes()
         self.presentViewController(navigationController, animated: true, completion: nil)
     }
 }
