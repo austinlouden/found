@@ -1,0 +1,40 @@
+//
+//  PlaceSelectorTableViewCell.swift
+//  Found
+//
+//  Created by Austin Louden on 4/4/16.
+//  Copyright © 2016 Austin Louden. All rights reserved.
+//
+
+import UIKit
+import SnapKit
+
+class PlaceSelectorTableViewCell: UITableViewCell {
+    
+    let nameLabel = UILabel()
+    let addressLabel = UILabel()
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.contentView.addSubview(nameLabel)
+        
+        nameLabel.snp_makeConstraints { (make) in
+            make.top.equalTo(self.contentView).inset(Insets.small)
+            make.width.equalTo(self.contentView).inset(Insets.large)
+            make.left.equalTo(self.contentView).inset(Insets.large)
+            make.height.equalTo(nameLabel)
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+
+}

@@ -12,8 +12,11 @@ import RealmSwift
 class PlaceSelectorViewController: UIViewController {
     
     let placesClient = GMSPlacesClient()
-    var places = [GMSPlaceLikelihood]()
     let tableView = UITableView()
+    let tableViewCellHeight: CGFloat = 60.0
+    
+    var places = [GMSPlaceLikelihood]()
+    
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -22,6 +25,7 @@ class PlaceSelectorViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.registerClass(PlaceSelectorTableViewCell.self, forCellReuseIdentifier: "placeCell")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -60,9 +64,13 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = places[indexPath.row].place.name
+        let cell = PlaceSelectorTableViewCell()
+        cell.nameLabel.attributedText = NSAttributedString.largeBoldAttributedString(places[indexPath.row].place.name, color: UIColor.foundDarkGrayColor())
         return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return tableViewCellHeight
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
