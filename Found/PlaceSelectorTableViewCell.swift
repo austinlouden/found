@@ -44,5 +44,27 @@ class PlaceSelectorTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+}
 
+class PlaceSelectorFooterView: UIView {
+    
+    let seeMoreButton = UIButton()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        seeMoreButton.contentHorizontalAlignment = .Left
+        self.addSubview(seeMoreButton)
+        
+        seeMoreButton.snp_makeConstraints { (make) in
+            make.width.equalTo(self).inset(Padding.large)
+            make.left.equalTo(self).inset(Padding.large)
+            make.height.equalTo(self)
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }

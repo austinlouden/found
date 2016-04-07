@@ -15,6 +15,10 @@ class PlaceSelectorViewController: UIViewController {
     let tableView = UITableView()
     let tableViewCellHeight: CGFloat = 60.0
     
+    let maxPlaceCount = 3
+    let footerHeight: CGFloat = 32
+    var shouldShowAllPlaceSuggestions = false
+    
     var places = [GMSPlaceLikelihood]()
     
     
@@ -26,7 +30,12 @@ class PlaceSelectorViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .None
+        tableView.showsVerticalScrollIndicator = false
         tableView.registerClass(PlaceSelectorTableViewCell.self, forCellReuseIdentifier: "placeCell")
+        
+        tableView.snp_makeConstraints { (make) in
+            make.edges.equalTo(self.view)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,7 +51,7 @@ class PlaceSelectorViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = closeButton
         
         tableView.frame = self.view.frame
-        tableView.contentInset = UIEdgeInsetsMake(16, 0, 0, 0)
+        tableView.contentInset = UIEdgeInsetsMake(8, 0, 0, 0)
         self.view.addSubview(tableView)
 
         placesClient.currentPlaceWithCallback({ [weak self]
@@ -58,12 +67,20 @@ class PlaceSelectorViewController: UIViewController {
     func closePressed() {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    func seeMorePressed() {
+        shouldShowAllPlaceSuggestions = true
+        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+    }
 }
 
 // MARK: - UITableViewDatasource
 extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (shouldShowAllPlaceSuggestions == false && self.places.count >= maxPlaceCount) {
+            return maxPlaceCount
+        }
         return self.places.count
     }
     
@@ -103,5 +120,26 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
         }
         
         self.closePressed()
+    }
+    
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if (shouldShowAllPlaceSuggestions == false && self.places.count > maxPlaceCount) {
+            let footerView = PlaceSelectorFooterView(frame: CGRectMake(0, 0, tableView.frame.size.width, footerHeight))
+            let seeMoreText = String(format: "See %d more suggestions", self.places.count - maxPlaceCount)
+            
+            footerView.seeMoreButton.setAttributedTitle(NSAttributedString.attributedStringWithFont(UIFont.mediumBoldFont(), string: seeMoreText, color: UIColor.foundDarkGrayColor()), forState: .Normal)
+            footerView.seeMoreButton.addTarget(self, action: #selector(seeMorePressed), forControlEvents: .TouchUpInside)
+            
+            return footerView
+        }
+        return nil
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if (shouldShowAllPlaceSuggestions == false && self.places.count > maxPlaceCount) {
+            return footerHeight
+        }
+        
+        return 0
     }
 }
