@@ -16,9 +16,11 @@ class PlaceSelectorViewController: UIViewController {
     let tableViewCellHeight: CGFloat = 60.0
     
     let maxPlaceCount = 3
-    let footerHeight: CGFloat = 32
-    var shouldShowAllPlaceSuggestions = false
+    let footerHeight: CGFloat = 42
+    let placesSection = 0
+    let listsSection = 1
     
+    var shouldShowAllPlaceSuggestions = false
     var places = [GMSPlaceLikelihood]()
     
     
@@ -72,12 +74,25 @@ class PlaceSelectorViewController: UIViewController {
         shouldShowAllPlaceSuggestions = true
         tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
     }
+    
+    func shouldShowSeeMoreFooter(section: Int) -> Bool {
+        return shouldShowAllPlaceSuggestions == false && self.places.count > maxPlaceCount && section == placesSection
+    }
 }
 
-// MARK: - UITableViewDatasource
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegate {
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if (section == listsSection) {
+            return 1
+        }
+        
         if (shouldShowAllPlaceSuggestions == false && self.places.count >= maxPlaceCount) {
             return maxPlaceCount
         }
@@ -85,6 +100,13 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        if (indexPath.section == listsSection) {
+            let cell = UITableViewCell()
+            cell.textLabel?.text = "hello"
+            return cell
+        }
+        
         let cell = PlaceSelectorTableViewCell()
         let place = self.places[indexPath.row].place
         
@@ -122,8 +144,24 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
         self.closePressed()
     }
     
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if (section == listsSection) {
+            return ListSelectorHeaderView()
+        }
+        
+        return nil
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if (section == listsSection) {
+            return 0.5
+        }
+        
+        return 0.0
+    }
+    
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if (shouldShowAllPlaceSuggestions == false && self.places.count > maxPlaceCount) {
+        if (shouldShowSeeMoreFooter(section)) {
             let footerView = PlaceSelectorFooterView(frame: CGRectMake(0, 0, tableView.frame.size.width, footerHeight))
             let seeMoreText = String(format: "See %d more suggestions", self.places.count - maxPlaceCount)
             
@@ -136,7 +174,7 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if (shouldShowAllPlaceSuggestions == false && self.places.count > maxPlaceCount) {
+        if (shouldShowSeeMoreFooter(section)) {
             return footerHeight
         }
         

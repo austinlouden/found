@@ -57,9 +57,10 @@ class PlaceSelectorFooterView: UIView {
         self.addSubview(seeMoreButton)
         
         seeMoreButton.snp_makeConstraints { (make) in
+            make.top.equalTo(self.snp_top)
             make.width.equalTo(self).inset(Padding.large)
             make.left.equalTo(self).inset(Padding.large)
-            make.height.equalTo(self)
+            make.height.equalTo(seeMoreButton)
         }
     }
     
