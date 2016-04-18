@@ -102,20 +102,18 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if (indexPath.section == listsSection) {
-            let cell = UITableViewCell()
-            cell.textLabel?.text = "hello"
+            let cell = ListCreatorTableViewCell()
+            cell.delegate = self
             return cell
         }
         
         let cell = PlaceSelectorTableViewCell()
         let place = self.places[indexPath.row].place
         
-        cell.nameLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.largeBoldFont(), string: place.name, color: UIColor.foundDarkGrayColor())
+        cell.name = place.name
         
         if let address = place.formattedAddress {
-             cell.addressLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.smallRegularFont(), string: address, color: UIColor.foundLightGrayColor())
-        } else {
-            cell.addressLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.smallRegularFont(), string: "No address available", color: UIColor.foundLightGrayColor())
+             cell.address = address
         }
         
         return cell
@@ -179,5 +177,11 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
         }
         
         return 0
+    }
+}
+
+extension PlaceSelectorViewController: ListCreatorTableViewCellDelegate {
+    func didCreatePlaceList(placeListName: String) {
+        print(placeListName)
     }
 }

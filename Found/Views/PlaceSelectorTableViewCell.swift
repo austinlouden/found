@@ -11,9 +11,20 @@ import SnapKit
 
 class PlaceSelectorTableViewCell: UITableViewCell {
     
-    let nameLabel = UILabel()
+    private let nameLabel = UILabel()
     let addressLabel = UILabel()
-    
+
+    var name: String = "" {
+        didSet {
+            nameLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.largeBoldFont(), string: name, color: UIColor.foundDarkGrayColor())
+        }
+    }
+    var address: String = "No address available" {
+        didSet {
+            addressLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.smallRegularFont(), string: address, color: UIColor.foundLightGrayColor())
+        }
+    }
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -34,15 +45,9 @@ class PlaceSelectorTableViewCell: UITableViewCell {
             make.height.equalTo(addressLabel)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 }
 

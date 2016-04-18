@@ -65,4 +65,8 @@ extension NSAttributedString {
     class func navigationButtonAttributes() -> [String : AnyObject]? {
         return [NSFontAttributeName: UIFont.mediumRegularFont(), NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(), NSKernAttributeName: -1.0]
     }
+    
+    class func typingAttributes() -> [String : AnyObject]? {
+        return [NSFontAttributeName: UIFont.largeBoldFont(), NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(), NSKernAttributeName: -1.0]
+    }
 }
