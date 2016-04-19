@@ -13,6 +13,7 @@ class ProfileViewController: UIViewController {
     
     let tableView = UITableView()
     var places: Results<Place>!
+    var lists: Results<PlaceList>!
     let realm = try! Realm()
     
     init() {
@@ -39,6 +40,7 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         
         places = realm.objects(Place)
+        lists = realm.objects(PlaceList)
         tableView.reloadData()
     }
 }
@@ -47,12 +49,12 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return places.count
+        return lists.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = places[indexPath.row].name
+        cell.textLabel?.text = lists[indexPath.row].name
         return cell
     }
 }

@@ -182,6 +182,12 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
 
 extension PlaceSelectorViewController: ListCreatorTableViewCellDelegate {
     func didCreatePlaceList(placeListName: String) {
-        print(placeListName)
+        let placeList = PlaceList()
+        placeList.name = placeListName
+        
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(placeList)
+        }
     }
 }
