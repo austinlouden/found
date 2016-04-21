@@ -64,6 +64,28 @@ protocol ListCreatorTableViewCellDelegate: class {
 }
 
 class ListSelectorTableViewCell: UITableViewCell {
+    
+    private let nameLabel = UILabel()
+    
+    var name: String = "" {
+        didSet {
+            nameLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.largeBoldFont(), string: name, color: UIColor.foundDarkGrayColor())
+        }
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.contentView.addSubview(nameLabel)
+        
+        nameLabel.snp_makeConstraints { (make) in
+            make.edges.equalTo(self).inset(UIEdgeInsetsMake(0, Padding.large, 0, Padding.large))
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
 
 }

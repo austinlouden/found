@@ -12,6 +12,7 @@ import RealmSwift
 class PlaceSelectorViewController: UIViewController {
     
     let placesClient = GMSPlacesClient()
+    let realm = try! Realm()
     let tableView = UITableView()
     let tableViewCellHeight: CGFloat = 60.0
     
@@ -22,18 +23,22 @@ class PlaceSelectorViewController: UIViewController {
     
     var shouldShowAllPlaceSuggestions = false
     var places = [GMSPlaceLikelihood]()
+    var lists: Results<PlaceList>!
     
     
     init() {
         super.init(nibName: nil, bundle: nil)
         
         self.title = "Save this place"
+        
+        lists = realm.objects(PlaceList).sorted("updatedAt", ascending: false)
 
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .None
         tableView.showsVerticalScrollIndicator = false
         tableView.registerClass(PlaceSelectorTableViewCell.self, forCellReuseIdentifier: "placeCell")
+        tableView.registerClass(ListSelectorTableViewCell.self, forCellReuseIdentifier: "listCell")
         
         tableView.snp_makeConstraints { (make) in
             make.edges.equalTo(self.view)
@@ -90,7 +95,8 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if (section == listsSection) {
-            return 1
+            // list count plus create a list cell
+            return lists.count + 1
         }
         
         if (shouldShowAllPlaceSuggestions == false && self.places.count >= maxPlaceCount) {
@@ -102,9 +108,16 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if (indexPath.section == listsSection) {
-            let cell = ListCreatorTableViewCell()
-            cell.delegate = self
-            return cell
+            if (indexPath.row == 0) {
+                let cell = ListCreatorTableViewCell()
+                cell.delegate = self
+                return cell
+            } else {
+                let cell = ListSelectorTableViewCell()
+                // use indexpath.row - 1 to exclude the creator cell
+                cell.name = lists[indexPath.row - 1].name
+                return cell
+            }
         }
         
         let cell = PlaceSelectorTableViewCell()
@@ -184,10 +197,12 @@ extension PlaceSelectorViewController: ListCreatorTableViewCellDelegate {
     func didCreatePlaceList(placeListName: String) {
         let placeList = PlaceList()
         placeList.name = placeListName
+        placeList.updatedAt = NSDate()
         
-        let realm = try! Realm()
         try! realm.write {
             realm.add(placeList)
         }
+        
+        tableView.reloadData()
     }
 }

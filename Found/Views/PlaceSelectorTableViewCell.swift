@@ -12,7 +12,7 @@ import SnapKit
 class PlaceSelectorTableViewCell: UITableViewCell {
     
     private let nameLabel = UILabel()
-    let addressLabel = UILabel()
+    private let addressLabel = UILabel()
 
     var name: String = "" {
         didSet {

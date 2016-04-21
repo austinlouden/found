@@ -12,5 +12,6 @@ import RealmSwift
 class PlaceList: Object {
     dynamic var name = ""
     dynamic var descriptionText: String? = nil
+    dynamic var updatedAt = NSDate()
     let places = List<Place>()
 }
