@@ -20,11 +20,15 @@ struct FontSizes {
 
 extension UIColor {
     class func foundDarkGrayColor() -> UIColor {
-        return UIColor.init(white: 75.0/255.0, alpha: 1.0)
+        return UIColor.init(white: 75.0/255.0, alpha: 1)
     }
     
     class func foundLightGrayColor() -> UIColor {
-        return UIColor.init(white: 181.0/255.0, alpha: 1.0)
+        return UIColor.init(white: 181.0/255.0, alpha: 1)
+    }
+    
+    class func foundUltraLightGrayColor() -> UIColor {
+        return UIColor.init(white: 229.0/255.0, alpha: 1)
     }
 }
 
@@ -62,8 +66,20 @@ extension NSAttributedString {
         return [NSFontAttributeName: UIFont.mediumBoldFont(), NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(), NSKernAttributeName: -1.0]
     }
     
-    class func navigationButtonAttributes() -> [String : AnyObject]? {
-        return [NSFontAttributeName: UIFont.mediumRegularFont(), NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(), NSKernAttributeName: -1.0]
+    class func navigationSecondaryButtonAttributes(controlState: UIControlState) -> [String : AnyObject]? {
+        if (controlState == .Normal) {
+            return [NSFontAttributeName: UIFont.mediumRegularFont(), NSForegroundColorAttributeName: UIColor.foundLightGrayColor(), NSKernAttributeName: -1.0]
+        } else {
+            return [NSFontAttributeName: UIFont.mediumRegularFont(), NSForegroundColorAttributeName: UIColor.foundLightGrayColor(), NSKernAttributeName: -1.0]
+        }
+    }
+    
+    class func navigationPrimaryButtonAttributes(controlState: UIControlState) -> [String : AnyObject]? {
+        if (controlState == .Normal) {
+            return [NSFontAttributeName: UIFont.mediumRegularFont(), NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(), NSKernAttributeName: -1.0]
+        } else {
+            return [NSFontAttributeName: UIFont.mediumRegularFont(), NSForegroundColorAttributeName: UIColor.foundLightGrayColor(), NSKernAttributeName: -1.0]
+        }
     }
     
     class func typingAttributes() -> [String : AnyObject]? {

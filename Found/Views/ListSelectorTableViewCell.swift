@@ -11,7 +11,7 @@ import UIKit
 class ListSelectorHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.foundLightGrayColor()
+        self.backgroundColor = UIColor.foundUltraLightGrayColor()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,7 +30,9 @@ class ListCreatorTableViewCell: UITableViewCell, UITextFieldDelegate {
         
         textField.delegate = self
         textField.returnKeyType = .Done
-        textField.attributedPlaceholder = NSAttributedString.attributedStringWithFont(UIFont.largeBoldFont(), string: "Create a list", color: UIColor.foundLightGrayColor())
+        textField.attributedPlaceholder = NSAttributedString.attributedStringWithFont(UIFont.largeBoldFont(),
+                                                                                      string: "Create a list...",
+                                                                                      color: UIColor.foundLightGrayColor())
         self.addSubview(textField)
         
         textField.snp_makeConstraints { (make) in

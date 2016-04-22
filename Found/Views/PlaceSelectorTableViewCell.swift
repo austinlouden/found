@@ -55,6 +55,12 @@ class PlaceSelectorFooterView: UIView {
     
     let seeMoreButton = UIButton()
     
+    var seeMoreText: String = "" {
+        didSet {
+            seeMoreButton.setAttributedTitle(NSAttributedString.attributedStringWithFont(UIFont.mediumBoldFont(), string: seeMoreText, color: UIColor.foundDarkGrayColor()), forState: .Normal)
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

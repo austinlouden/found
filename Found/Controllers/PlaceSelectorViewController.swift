@@ -29,13 +29,24 @@ class PlaceSelectorViewController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         
-        self.title = "Save this place"
+        self.title = "Select a place"
+        
+        let closeButton = UIBarButtonItem(title: "Close", style: .Plain, target: self, action: #selector(closePressed))
+        closeButton.setTitleTextAttributes(NSAttributedString.navigationSecondaryButtonAttributes(.Normal), forState: .Normal)
+        closeButton.setTitleTextAttributes(NSAttributedString.navigationSecondaryButtonAttributes(.Highlighted), forState: .Highlighted)
+        self.navigationItem.leftBarButtonItem = closeButton
+        
+        let saveButton = UIBarButtonItem(title: "Save", style: .Plain, target: self, action: #selector(savePressed))
+        saveButton.setTitleTextAttributes(NSAttributedString.navigationPrimaryButtonAttributes(.Normal), forState: .Normal)
+        saveButton.setTitleTextAttributes(NSAttributedString.navigationPrimaryButtonAttributes(.Highlighted), forState: .Highlighted)
+        self.navigationItem.rightBarButtonItem = saveButton
         
         lists = realm.objects(PlaceList).sorted("updatedAt", ascending: false)
 
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .None
+        tableView.allowsMultipleSelection = true
         tableView.showsVerticalScrollIndicator = false
         tableView.registerClass(PlaceSelectorTableViewCell.self, forCellReuseIdentifier: "placeCell")
         tableView.registerClass(ListSelectorTableViewCell.self, forCellReuseIdentifier: "listCell")
@@ -53,10 +64,6 @@ class PlaceSelectorViewController: UIViewController {
         self.view.backgroundColor = UIColor.whiteColor()
         self.navigationController?.navigationBar.translucent = false
         
-        let closeButton = UIBarButtonItem(title: "Close", style: .Plain, target: self, action: #selector(closePressed))
-        closeButton.setTitleTextAttributes(NSAttributedString.navigationButtonAttributes(), forState: .Normal)
-        self.navigationItem.leftBarButtonItem = closeButton
-        
         tableView.frame = self.view.frame
         tableView.contentInset = UIEdgeInsetsMake(8, 0, 0, 0)
         self.view.addSubview(tableView)
@@ -72,6 +79,11 @@ class PlaceSelectorViewController: UIViewController {
     }
     
     func closePressed() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func savePressed() {
+        print(tableView.indexPathsForSelectedRows)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -136,7 +148,30 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
         return tableViewCellHeight
     }
     
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        
+        if (indexPath.section == listsSection) {
+            return indexPath
+        }
+
+        if let selectedRows = tableView.indexPathsForSelectedRows {
+            for selectedRow in selectedRows {
+                if (selectedRow.section == placesSection) {
+                    tableView.deselectRowAtIndexPath(selectedRow, animated: true)
+                }
+            }
+        }
+        
+        return indexPath
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if (indexPath.section == placesSection) {
+            self.navigationItem.rightBarButtonItem?.enabled = true
+        }
+        
+        /*
         let gmsPlace : GMSPlace = places[indexPath.row].place
         
         let place = Place()
@@ -153,6 +188,7 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
         }
         
         self.closePressed()
+        */
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -174,9 +210,7 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if (shouldShowSeeMoreFooter(section)) {
             let footerView = PlaceSelectorFooterView(frame: CGRectMake(0, 0, tableView.frame.size.width, footerHeight))
-            let seeMoreText = String(format: "See %d more suggestions", self.places.count - maxPlaceCount)
-            
-            footerView.seeMoreButton.setAttributedTitle(NSAttributedString.attributedStringWithFont(UIFont.mediumBoldFont(), string: seeMoreText, color: UIColor.foundDarkGrayColor()), forState: .Normal)
+            footerView.seeMoreText = String(format: "See %d more suggestions", self.places.count - maxPlaceCount)
             footerView.seeMoreButton.addTarget(self, action: #selector(seeMorePressed), forControlEvents: .TouchUpInside)
             
             return footerView
