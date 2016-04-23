@@ -11,6 +11,8 @@ import SnapKit
 
 class BaseTableViewCell: UITableViewCell {
     
+    static let defaultTableViewCellHeight: CGFloat = 60.0
+    
     private let primaryLabel = UILabel()
     private let secondaryLabel = UILabel()
 

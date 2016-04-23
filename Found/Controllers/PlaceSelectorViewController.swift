@@ -14,7 +14,6 @@ class PlaceSelectorViewController: UIViewController {
     let placesClient = GMSPlacesClient()
     let realm = try! Realm()
     let tableView = UITableView()
-    let tableViewCellHeight: CGFloat = 60.0
     
     let maxPlaceCount = 3
     let footerHeight: CGFloat = 42
@@ -176,7 +175,7 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return tableViewCellHeight
+        return Sizes.defaultCellHeight
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {

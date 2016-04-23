@@ -18,6 +18,10 @@ struct FontSizes {
     static let Large: CGFloat = 24.0
 }
 
+struct Sizes {
+    static let defaultCellHeight: CGFloat = 60.0
+}
+
 extension UIColor {
     class func foundDarkGrayColor() -> UIColor {
         return UIColor.init(white: 75.0/255.0, alpha: 1)

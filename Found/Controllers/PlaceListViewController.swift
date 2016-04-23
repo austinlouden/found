@@ -1,23 +1,23 @@
 //
-//  ProfileViewController.swift
+//  PlaceListViewController.swift
 //  Found
 //
-//  Created by Austin Louden on 3/30/16.
+//  Created by Austin Louden on 4/23/16.
 //  Copyright © 2016 Austin Louden. All rights reserved.
 //
 
 import UIKit
-import RealmSwift
 
-class ProfileViewController: UIViewController {
+class PlaceListViewController: UIViewController {
     
     let tableView = UITableView()
-    var lists: Results<PlaceList>!
-    let realm = try! Realm()
-    
-    init() {
+    let placeList: PlaceList
+
+    init(list: PlaceList) {
+        placeList = list
+        
         super.init(nibName: nil, bundle: nil)
-        self.title = "Saved"
+        self.title = placeList.name
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -31,41 +31,32 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.view.backgroundColor = UIColor.whiteColor()
         
         tableView.frame = self.view.frame
         tableView.contentInset = UIEdgeInsetsMake(UIApplication.sharedApplication().statusBarFrame.size.height, 0, 0, 0)
         self.view.addSubview(tableView)
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        lists = realm.objects(PlaceList)
-        tableView.reloadData()
-    }
 }
 
-// MARK: - UITableViewDatasource
-extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
-    
+extension PlaceListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lists.count
+        return placeList.places.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let placeList = lists[indexPath.row]
+        let place = placeList.places[indexPath.row]
         
         let cell = BaseTableViewCell()
-        cell.primaryString = placeList.name
-        cell.secondaryString = String(format: "%d places", placeList.places.count)
+        cell.primaryString = place.name
+        
+        if let address = place.formattedAddress {
+            cell.secondaryString = address
+        }
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let list = lists[indexPath.row]
-        self.navigationController?.pushViewController(PlaceListViewController(list: list), animated: true)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

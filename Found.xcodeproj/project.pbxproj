@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		201934CEF7F464A303A97647 /* Pods_Found.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF05EC151139F2A6AF69826A /* Pods_Found.framework */; };
+		280641F71CCB68DF007F6E79 /* PlaceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280641F61CCB68DF007F6E79 /* PlaceListViewController.swift */; };
 		284580151CC4697800DA290F /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284580121CC4697800DA290F /* MapViewController.swift */; };
 		284580161CC4697800DA290F /* PlaceSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284580131CC4697800DA290F /* PlaceSelectorViewController.swift */; };
 		284580171CC4697800DA290F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284580141CC4697800DA290F /* ProfileViewController.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		280641F61CCB68DF007F6E79 /* PlaceListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceListViewController.swift; sourceTree = "<group>"; };
 		284580121CC4697800DA290F /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		284580131CC4697800DA290F /* PlaceSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceSelectorViewController.swift; sourceTree = "<group>"; };
 		284580141CC4697800DA290F /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				284580121CC4697800DA290F /* MapViewController.swift */,
 				284580131CC4697800DA290F /* PlaceSelectorViewController.swift */,
 				284580141CC4697800DA290F /* ProfileViewController.swift */,
+				280641F61CCB68DF007F6E79 /* PlaceListViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				284580201CC4698E00DA290F /* ListSelectorTableViewCell.swift in Sources */,
 				284580151CC4697800DA290F /* MapViewController.swift in Sources */,
 				284580171CC4697800DA290F /* ProfileViewController.swift in Sources */,
+				280641F71CCB68DF007F6E79 /* PlaceListViewController.swift in Sources */,
 				2845801B1CC4698600DA290F /* Place.swift in Sources */,
 				28B2942C1CB3526700EDF554 /* Constants.swift in Sources */,
 				284580161CC4697800DA290F /* PlaceSelectorViewController.swift in Sources */,
