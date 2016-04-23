@@ -30,6 +30,8 @@ class ListCreatorTableViewCell: UITableViewCell, UITextFieldDelegate {
         
         textField.delegate = self
         textField.returnKeyType = .Done
+        // TODO: if there are no lists, placeholder text should have suggestions.
+        // For example, "Paris" or "Places to eat"
         textField.attributedPlaceholder = NSAttributedString.attributedStringWithFont(UIFont.largeBoldFont(),
                                                                                       string: "Create a list...",
                                                                                       color: UIColor.foundLightGrayColor())

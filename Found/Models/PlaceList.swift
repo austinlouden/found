@@ -14,4 +14,8 @@ class PlaceList: Object {
     dynamic var descriptionText: String? = nil
     dynamic var updatedAt = NSDate()
     let places = List<Place>()
+    
+    override static func primaryKey() -> String? {
+        return "name"
+    }
 }

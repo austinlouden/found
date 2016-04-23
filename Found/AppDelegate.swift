@@ -23,10 +23,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // create the view controllers held in the tab bar
         let mapViewController = MapViewController()
         mapViewController.tabBarItem = UITabBarItem(title: "Map", image: nil, selectedImage: nil)
+        mapViewController.tabBarItem.setTitleTextAttributes(NSAttributedString.tabBarTitleAttributes(), forState: .Normal)
         
         let navigationController = UINavigationController(rootViewController: ProfileViewController())
         navigationController.navigationBar.titleTextAttributes = NSAttributedString.navigationTitleAttributes()
         navigationController.tabBarItem = UITabBarItem(title: "Saved", image: nil, selectedImage: nil)
+        navigationController.tabBarItem.setTitleTextAttributes(NSAttributedString.tabBarTitleAttributes(), forState: .Normal)
         
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [mapViewController, navigationController]

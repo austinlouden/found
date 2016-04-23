@@ -31,17 +31,17 @@ class PlaceSelectorViewController: UIViewController {
         self.title = "Select a place"
         
         let closeButton = UIBarButtonItem(title: "Close", style: .Plain, target: self, action: #selector(closePressed))
-        closeButton.setTitleTextAttributes(NSAttributedString.navigationSecondaryButtonAttributes(.Normal), forState: .Normal)
-        closeButton.setTitleTextAttributes(NSAttributedString.navigationSecondaryButtonAttributes(.Highlighted), forState: .Highlighted)
+        closeButton.setTitleTextAttributes(NSAttributedString.navigationButtonAttributes(.Normal), forState: .Normal)
+        closeButton.setTitleTextAttributes(NSAttributedString.navigationButtonAttributes(.Highlighted), forState: .Highlighted)
         self.navigationItem.leftBarButtonItem = closeButton
         
         let saveButton = UIBarButtonItem(title: "Save", style: .Plain, target: self, action: #selector(savePressed))
         saveButton.enabled = false
-        saveButton.setTitleTextAttributes(NSAttributedString.navigationPrimaryButtonAttributes(.Normal), forState: .Normal)
-        saveButton.setTitleTextAttributes(NSAttributedString.navigationPrimaryButtonAttributes(.Highlighted), forState: .Highlighted)
+        saveButton.setTitleTextAttributes(NSAttributedString.navigationButtonAttributes(.Normal), forState: .Normal)
+        saveButton.setTitleTextAttributes(NSAttributedString.navigationButtonAttributes(.Highlighted), forState: .Highlighted)
         self.navigationItem.rightBarButtonItem = saveButton
         
-        lists = realm.objects(PlaceList).sorted("updatedAt", ascending: false)
+        lists = realm.objects(PlaceList).sorted("updatedAt", ascending: false).filter("name != 'All places'")
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -92,7 +92,8 @@ class PlaceSelectorViewController: UIViewController {
                 if (selectedRow.section == placesSection) {
                     gmsPlace = places[selectedRow.row].place
                 } else if (selectedRow.section == listsSection) {
-                    listsToSaveTo.append(lists[selectedRow.row])
+                    // selected row - 1 for create list cell
+                    listsToSaveTo.append(lists[selectedRow.row - 1])
                 }
             }
         }
@@ -104,6 +105,10 @@ class PlaceSelectorViewController: UIViewController {
         place.latitude = gmsPlace.coordinate.latitude
         place.formattedAddress = gmsPlace.formattedAddress
         place.website = gmsPlace.website?.absoluteString
+        
+        if let allList = realm.objectForPrimaryKey(PlaceList.self, key: "All places") {
+            listsToSaveTo.append(allList)
+        }
         
         if (listsToSaveTo.count > 0) {
             let realm = try! Realm()
