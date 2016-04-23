@@ -9,40 +9,40 @@
 import UIKit
 import SnapKit
 
-class PlaceSelectorTableViewCell: UITableViewCell {
+class BaseTableViewCell: UITableViewCell {
     
-    private let nameLabel = UILabel()
-    private let addressLabel = UILabel()
+    private let primaryLabel = UILabel()
+    private let secondaryLabel = UILabel()
 
-    var name: String = "" {
+    var primaryString: String = "" {
         didSet {
-            nameLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.largeBoldFont(), string: name, color: UIColor.foundDarkGrayColor())
+            primaryLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.largeBoldFont(), string: primaryString, color: UIColor.foundDarkGrayColor())
         }
     }
-    var address: String = "No address available" {
+    var secondaryString: String = "" {
         didSet {
-            addressLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.smallRegularFont(), string: address, color: UIColor.foundLightGrayColor())
+            secondaryLabel.attributedText = NSAttributedString.attributedStringWithFont(UIFont.smallRegularFont(), string: secondaryString, color: UIColor.foundLightGrayColor())
         }
     }
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.contentView.addSubview(nameLabel)
-        self.contentView.addSubview(addressLabel)
+        self.contentView.addSubview(primaryLabel)
+        self.contentView.addSubview(secondaryLabel)
         
-        nameLabel.snp_makeConstraints { (make) in
+        primaryLabel.snp_makeConstraints { (make) in
             make.top.equalTo(self.contentView).inset(Padding.small)
             make.width.equalTo(self.contentView).inset(Padding.large)
             make.left.equalTo(self.contentView).inset(Padding.large)
-            make.height.equalTo(nameLabel)
+            make.height.equalTo(primaryLabel)
         }
         
-        addressLabel.snp_makeConstraints { (make) in
-            make.top.equalTo(nameLabel.snp_bottom)
+        secondaryLabel.snp_makeConstraints { (make) in
+            make.top.equalTo(primaryLabel.snp_bottom)
             make.width.equalTo(self.contentView).inset(Padding.large)
             make.left.equalTo(self.contentView).inset(Padding.large)
-            make.height.equalTo(addressLabel)
+            make.height.equalTo(secondaryLabel)
         }
     }
 

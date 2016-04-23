@@ -37,6 +37,7 @@ class PlaceSelectorViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = closeButton
         
         let saveButton = UIBarButtonItem(title: "Save", style: .Plain, target: self, action: #selector(savePressed))
+        saveButton.enabled = false
         saveButton.setTitleTextAttributes(NSAttributedString.navigationPrimaryButtonAttributes(.Normal), forState: .Normal)
         saveButton.setTitleTextAttributes(NSAttributedString.navigationPrimaryButtonAttributes(.Highlighted), forState: .Highlighted)
         self.navigationItem.rightBarButtonItem = saveButton
@@ -48,7 +49,7 @@ class PlaceSelectorViewController: UIViewController {
         tableView.separatorStyle = .None
         tableView.allowsMultipleSelection = true
         tableView.showsVerticalScrollIndicator = false
-        tableView.registerClass(PlaceSelectorTableViewCell.self, forCellReuseIdentifier: "placeCell")
+        tableView.registerClass(BaseTableViewCell.self, forCellReuseIdentifier: "placeCell")
         tableView.registerClass(ListSelectorTableViewCell.self, forCellReuseIdentifier: "listCell")
         
         tableView.snp_makeConstraints { (make) in
@@ -83,7 +84,37 @@ class PlaceSelectorViewController: UIViewController {
     }
     
     func savePressed() {
-        print(tableView.indexPathsForSelectedRows)
+        
+        var gmsPlace: GMSPlace!
+        var listsToSaveTo = [PlaceList]()
+        
+        if let selectedRows = tableView.indexPathsForSelectedRows {
+            for selectedRow in selectedRows {
+                if (selectedRow.section == placesSection) {
+                    gmsPlace = places[selectedRow.row].place
+                } else if (selectedRow.section == listsSection) {
+                    listsToSaveTo.append(lists[selectedRow.row])
+                }
+            }
+        }
+        
+        let place = Place()
+        place.name = gmsPlace.name
+        place.placeID = gmsPlace.placeID
+        place.longitude = gmsPlace.coordinate.longitude
+        place.latitude = gmsPlace.coordinate.latitude
+        place.formattedAddress = gmsPlace.formattedAddress
+        place.website = gmsPlace.website?.absoluteString
+        
+        if (listsToSaveTo.count > 0) {
+            let realm = try! Realm()
+            try! realm.write {
+                for placeList in listsToSaveTo {
+                    placeList.places.append(place)
+                }
+            }
+        }
+        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -132,13 +163,13 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
             }
         }
         
-        let cell = PlaceSelectorTableViewCell()
+        let cell = BaseTableViewCell()
         let place = self.places[indexPath.row].place
         
-        cell.name = place.name
+        cell.primaryString = place.name
         
         if let address = place.formattedAddress {
-             cell.address = address
+             cell.secondaryString = address
         }
         
         return cell
@@ -166,29 +197,9 @@ extension PlaceSelectorViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
         if (indexPath.section == placesSection) {
             self.navigationItem.rightBarButtonItem?.enabled = true
         }
-        
-        /*
-        let gmsPlace : GMSPlace = places[indexPath.row].place
-        
-        let place = Place()
-        place.name = gmsPlace.name
-        place.placeID = gmsPlace.placeID
-        place.longitude = gmsPlace.coordinate.longitude
-        place.latitude = gmsPlace.coordinate.latitude
-        place.formattedAddress = gmsPlace.formattedAddress
-        place.website = gmsPlace.website?.absoluteString
-        
-        let realm = try! Realm()
-        try! realm.write {
-            realm.add(place)
-        }
-        
-        self.closePressed()
-        */
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

@@ -11,15 +11,20 @@ import RealmSwift
 
 class ProfileViewController: UIViewController {
     
+    let tableViewCellHeight: CGFloat = 60.0
+    
     let tableView = UITableView()
-    var places: Results<Place>!
     var lists: Results<PlaceList>!
     let realm = try! Realm()
     
     init() {
         super.init(nibName: nil, bundle: nil)
+        self.title = "Saved"
+        
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .None
+        tableView.registerClass(BaseTableViewCell.self, forCellReuseIdentifier: "listCell")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,8 +43,7 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        places = realm.objects(Place)
+
         lists = realm.objects(PlaceList)
         tableView.reloadData()
     }
@@ -53,8 +57,20 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = lists[indexPath.row].name
+        let placeList = lists[indexPath.row]
+        
+        let cell = BaseTableViewCell()
+        cell.primaryString = placeList.name
+        cell.secondaryString = String(format: "%d places", placeList.places.count)
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let list = lists[indexPath.row]
+        print(list.places)
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return tableViewCellHeight
     }
 }

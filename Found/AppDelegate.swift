@@ -24,11 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let mapViewController = MapViewController()
         mapViewController.tabBarItem = UITabBarItem(title: "Map", image: nil, selectedImage: nil)
         
-        let profileViewController = ProfileViewController()
-        profileViewController.tabBarItem = UITabBarItem(title: "My places", image: nil, selectedImage: nil)
+        let navigationController = UINavigationController(rootViewController: ProfileViewController())
+        navigationController.navigationBar.titleTextAttributes = NSAttributedString.navigationTitleAttributes()
+        navigationController.tabBarItem = UITabBarItem(title: "Saved", image: nil, selectedImage: nil)
         
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [mapViewController, profileViewController]
+        tabBarController.viewControllers = [mapViewController, navigationController]
         
         let rootViewController = tabBarController
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
