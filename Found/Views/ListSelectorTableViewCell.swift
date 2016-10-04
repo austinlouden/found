@@ -29,7 +29,7 @@ class ListCreatorTableViewCell: UITableViewCell, UITextFieldDelegate {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         textField.delegate = self
-        textField.returnKeyType = .Done
+        textField.returnKeyType = .done
         // TODO: if there are no lists, placeholder text should have suggestions.
         // For example, "Paris" or "Places to eat"
         textField.attributedPlaceholder = NSAttributedString.attributedStringWithFont(UIFont.largeBoldFont(),
@@ -37,7 +37,7 @@ class ListCreatorTableViewCell: UITableViewCell, UITextFieldDelegate {
                                                                                       color: UIColor.foundLightGrayColor())
         self.addSubview(textField)
         
-        textField.snp_makeConstraints { (make) in
+        textField.snp.makeConstraints { (make) in
             make.edges.equalTo(self).inset(UIEdgeInsetsMake(0, Padding.large, Padding.small, Padding.large))
         }
     }
@@ -47,12 +47,12 @@ class ListCreatorTableViewCell: UITableViewCell, UITextFieldDelegate {
     }
     
     // MARK: - UITextFieldDelegate
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         textField.typingAttributes = NSAttributedString.typingAttributes()
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let placeListName = textField.attributedText?.string {
             textField.attributedText = nil
             delegate?.didCreatePlaceList(placeListName)
@@ -64,12 +64,12 @@ class ListCreatorTableViewCell: UITableViewCell, UITextFieldDelegate {
 }
 
 protocol ListCreatorTableViewCellDelegate: class {
-    func didCreatePlaceList(placeListName: String)
+    func didCreatePlaceList(_ placeListName: String)
 }
 
 class ListSelectorTableViewCell: UITableViewCell {
     
-    private let nameLabel = UILabel()
+    fileprivate let nameLabel = UILabel()
     
     var name: String = "" {
         didSet {
@@ -82,7 +82,7 @@ class ListSelectorTableViewCell: UITableViewCell {
         
         self.contentView.addSubview(nameLabel)
         
-        nameLabel.snp_makeConstraints { (make) in
+        nameLabel.snp.makeConstraints { (make) in
             make.edges.equalTo(self).inset(UIEdgeInsetsMake(0, Padding.large, 0, Padding.large))
         }
     }

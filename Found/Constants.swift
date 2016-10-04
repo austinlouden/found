@@ -65,7 +65,7 @@ extension UIFont {
 
 extension NSAttributedString {
     
-    class func attributedStringWithFont(font: UIFont, string: String, color: UIColor) -> NSAttributedString {
+    class func attributedStringWithFont(_ font: UIFont, string: String, color: UIColor) -> NSAttributedString {
         let attributedString = NSAttributedString(string: string, attributes: [NSFontAttributeName: font,
             NSForegroundColorAttributeName: color,
             NSKernAttributeName: -(font.pointSize/Sizes.kerningConstant)])
@@ -74,25 +74,35 @@ extension NSAttributedString {
     
     class func navigationTitleAttributes() -> [String : AnyObject]? {
         let font = UIFont.mediumBoldFont()
-        return [NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(), NSKernAttributeName: -(font.pointSize/Sizes.kerningConstant)]
+        let kerning = NSNumber(value: Float(-(font.pointSize/Sizes.kerningConstant)))
+        return [NSFontAttributeName: font,
+                NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(),
+                NSKernAttributeName: kerning]
     }
     
     class func tabBarTitleAttributes() -> [String : AnyObject]? {
         let font = UIFont.smallRegularFont()
-        return [NSFontAttributeName: UIFont.smallRegularFont(), NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(), NSKernAttributeName: -(font.pointSize/Sizes.kerningConstant)]
+        let kerning = NSNumber(value: Float(-(font.pointSize/Sizes.kerningConstant)))
+        return [NSFontAttributeName: UIFont.smallRegularFont(),
+                NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(),
+                NSKernAttributeName: kerning]
     }
     
-    class func navigationButtonAttributes(controlState: UIControlState) -> [String : AnyObject]? {
+    class func navigationButtonAttributes(_ controlState: UIControlState) -> [String : AnyObject]? {
         let font = UIFont.mediumRegularFont()
-        
-        if (controlState == .Normal) {
-            return [NSFontAttributeName: UIFont.mediumRegularFont(), NSForegroundColorAttributeName: UIColor.foundLightGrayColor(), NSKernAttributeName: -(font.pointSize/Sizes.kerningConstant)]
+        let kerning = NSNumber(value: Float(-(font.pointSize/Sizes.kerningConstant)))
+        if (controlState == UIControlState()) {
+            return [NSFontAttributeName: UIFont.mediumRegularFont(),
+                    NSForegroundColorAttributeName: UIColor.foundLightGrayColor(),
+                    NSKernAttributeName: kerning]
         } else {
-            return [NSFontAttributeName: UIFont.mediumRegularFont(), NSForegroundColorAttributeName: UIColor.foundLightGrayColor(), NSKernAttributeName: -(font.pointSize/Sizes.kerningConstant)]
+            return [NSFontAttributeName: UIFont.mediumRegularFont(),
+                    NSForegroundColorAttributeName: UIColor.foundLightGrayColor(),
+                    NSKernAttributeName: kerning]
         }
     }
     
     class func typingAttributes() -> [String : AnyObject]? {
-        return [NSFontAttributeName: UIFont.largeBoldFont(), NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(), NSKernAttributeName: -1.0]
+        return [NSFontAttributeName: UIFont.largeBoldFont(), NSForegroundColorAttributeName: UIColor.foundDarkGrayColor(), NSKernAttributeName: -1.0 as AnyObject]
     }
 }

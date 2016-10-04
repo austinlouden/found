@@ -21,8 +21,8 @@ class ProfileViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorStyle = .None
-        tableView.registerClass(BaseTableViewCell.self, forCellReuseIdentifier: "listCell")
+        tableView.separatorStyle = .none
+        tableView.register(BaseTableViewCell.self, forCellReuseIdentifier: "listCell")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,17 +32,17 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.white
         
         tableView.frame = self.view.frame
-        tableView.contentInset = UIEdgeInsetsMake(UIApplication.sharedApplication().statusBarFrame.size.height, 0, 0, 0)
+        tableView.contentInset = UIEdgeInsetsMake(UIApplication.shared.statusBarFrame.size.height, 0, 0, 0)
         self.view.addSubview(tableView)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        lists = realm.objects(PlaceList)
+        lists = realm.objects(PlaceList.self)
         tableView.reloadData()
     }
 }
@@ -50,11 +50,11 @@ class ProfileViewController: UIViewController {
 // MARK: - UITableViewDatasource
 extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return lists.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let placeList = lists[indexPath.row]
         
         let cell = BaseTableViewCell()
@@ -63,12 +63,12 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let list = lists[indexPath.row]
         self.navigationController?.pushViewController(PlaceListViewController(list: list), animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Sizes.defaultCellHeight
     }
 }

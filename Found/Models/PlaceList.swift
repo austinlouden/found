@@ -12,7 +12,7 @@ import RealmSwift
 class PlaceList: Object {
     dynamic var name = ""
     dynamic var descriptionText: String? = nil
-    dynamic var updatedAt = NSDate()
+    dynamic var updatedAt = Date()
     let places = List<Place>()
     
     override static func primaryKey() -> String? {

@@ -21,8 +21,8 @@ class PlaceListViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorStyle = .None
-        tableView.registerClass(BaseTableViewCell.self, forCellReuseIdentifier: "listCell")
+        tableView.separatorStyle = .none
+        tableView.register(BaseTableViewCell.self, forCellReuseIdentifier: "listCell")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,20 +31,20 @@ class PlaceListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.white
         
         tableView.frame = self.view.frame
-        tableView.contentInset = UIEdgeInsetsMake(UIApplication.sharedApplication().statusBarFrame.size.height, 0, 0, 0)
+        tableView.contentInset = UIEdgeInsetsMake(UIApplication.shared.statusBarFrame.size.height, 0, 0, 0)
         self.view.addSubview(tableView)
     }
 }
 
 extension PlaceListViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return placeList.places.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let place = placeList.places[indexPath.row]
         
         let cell = BaseTableViewCell()
@@ -56,10 +56,10 @@ extension PlaceListViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Sizes.defaultCellHeight
     }
 }

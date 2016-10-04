@@ -13,8 +13,8 @@ class BaseTableViewCell: UITableViewCell {
     
     static let defaultTableViewCellHeight: CGFloat = 60.0
     
-    private let primaryLabel = UILabel()
-    private let secondaryLabel = UILabel()
+    fileprivate let primaryLabel = UILabel()
+    fileprivate let secondaryLabel = UILabel()
 
     var primaryString: String = "" {
         didSet {
@@ -33,15 +33,15 @@ class BaseTableViewCell: UITableViewCell {
         self.contentView.addSubview(primaryLabel)
         self.contentView.addSubview(secondaryLabel)
         
-        primaryLabel.snp_makeConstraints { (make) in
+        primaryLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.contentView).inset(Padding.small)
             make.width.equalTo(self.contentView).inset(Padding.large)
             make.left.equalTo(self.contentView).inset(Padding.large)
             make.height.equalTo(primaryLabel)
         }
         
-        secondaryLabel.snp_makeConstraints { (make) in
-            make.top.equalTo(primaryLabel.snp_bottom)
+        secondaryLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(primaryLabel.snp.bottom)
             make.width.equalTo(self.contentView).inset(Padding.large)
             make.left.equalTo(self.contentView).inset(Padding.large)
             make.height.equalTo(secondaryLabel)
@@ -59,18 +59,18 @@ class PlaceSelectorFooterView: UIView {
     
     var seeMoreText: String = "" {
         didSet {
-            seeMoreButton.setAttributedTitle(NSAttributedString.attributedStringWithFont(UIFont.mediumBoldFont(), string: seeMoreText, color: UIColor.foundDarkGrayColor()), forState: .Normal)
+            seeMoreButton.setAttributedTitle(NSAttributedString.attributedStringWithFont(UIFont.mediumBoldFont(), string: seeMoreText, color: UIColor.foundDarkGrayColor()), for: UIControlState())
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        seeMoreButton.contentHorizontalAlignment = .Left
+        seeMoreButton.contentHorizontalAlignment = .left
         self.addSubview(seeMoreButton)
         
-        seeMoreButton.snp_makeConstraints { (make) in
-            make.top.equalTo(self.snp_top)
+        seeMoreButton.snp.makeConstraints { (make) in
+            make.top.equalTo(self.snp.top)
             make.width.equalTo(self).inset(Padding.large)
             make.left.equalTo(self).inset(Padding.large)
             make.height.equalTo(seeMoreButton)

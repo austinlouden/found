@@ -6,9 +6,6 @@
 //  Copyright © 2016 Austin Louden. All rights reserved.
 //
 
-import XCTest
-@testable import Found
-
 class FoundTests: XCTestCase {
     
     override func setUp() {
@@ -28,7 +25,7 @@ class FoundTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }
